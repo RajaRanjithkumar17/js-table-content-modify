@@ -1,118 +1,157 @@
-let data1 = document.getElementById("data-1")
-let data2 = document.getElementById("data-2")
-let data3 = document.getElementById("data-3")
-let saveBtn = document.getElementById("save")
-let tab = document.getElementById("tbl")
-// let editBtn = document.getElementById("edit")
-// let dltBtn = document.getElementById("delete")
-let idcount = 0 ,update;
-saveBtn.addEventListener("click", function() {
-    let text1 = data1.value;
-    let text2 = data2.value;
-    let text3 = data3.value;
-    let textTag = document.createElement("td");
-    let textTa = document.createElement("td");
-    let textTg = document.createElement("td");
-    // let modif1 = document.getElementById("modify1")
-    // let modif2 = document.getElementById("modify2")
-    // let modif3 = document.getElementById("modify3")
-    let listCount = document.createElement("tr");
-    let saveButton = document.createElement("button");
-    let editButton = document.createElement("button");
-    let deleteButton = document.createElement("button");
-    textTag.innerText = text1;
-    textTa.innerText = text2;
-    textTg.innerText = text3;
-    textTag.setAttribute("class","textName")
-    textTa.setAttribute("class","textEail")
-    textTg.setAttribute("class","textNum")
 
-    //set attribute
+let input1=document.getElementById("data-1");
+let input2=document.getElementById("data-2");
+let input3=document.getElementById("data-3");
 
-    saveButton.setAttribute("class","word");
-    editButton.setAttribute("class","edit");
-    deleteButton.setAttribute("class","delee");
-    listCount.setAttribute("id", "list-" +idcount)
-    
-    //add text for button
-    saveButton.innerText = "edit";
-    editButton.innerText = "del";
-    // deleteButton.innerText = ".";
 
+let tabelEle=document.getElementById("tbl");
+
+let saveEle=document.getElementById("save");
+
+var submitBtn=document.getElementById("sub");
+
+//hide sub butten bef entr value
+
+function hidesub(){
+    submitBtn.style.display = "none"
+}
+hidesub()
+function hidesave(){
+    saveEle.style.display = "none"
+}
+function showsave(){
+    saveEle.style.display = "block"
+}
+
+
+
+let idcnt=0;
+let updateId;
+
+saveEle.addEventListener('click',function(){
+  
+    let td1,td2,td3;
+
+    td1=input1.value;
+    td2=input2.value;
+    td3=input3.value;
    
-    tab.appendChild(listCount);
-    listCount.appendChild(textTag);
-    listCount.appendChild(textTa);
-    listCount.appendChild(textTg);
-    listCount.appendChild(saveButton);
-    listCount.appendChild(editButton);
-    listCount.appendChild(deleteButton);
+
+    //append td to tr
+    
+    var tRow = document.createElement("tr");
+    
+    var namethEle=document.createElement("td");
+    tRow.appendChild(namethEle);
+
+    var mailEle=document.createElement("td");
+    tRow.appendChild(mailEle);
+
+    var numberEle=document.createElement("td");
+    tRow.appendChild(numberEle);
+
+    
+    var delBtn=document.createElement("button");
+	
+	var editBtn=document.createElement("button");
+	
+	delBtn.innerText="Delete";  //set btn text
+	editBtn.innerText="Edit";
+	
+	namethEle.setAttribute("class","nameEdit"); ///put class for call whn need
+	mailEle.setAttribute("class","mailEdit");
+	numberEle.setAttribute("class","numberEdit");
+	
+    
+    delBtn.setAttribute("class","delete");
+	editBtn.setAttribute("class","edit");
+	tRow.setAttribute("id","list_"+idcnt);
+	
+    tRow.appendChild(delBtn);
+	tRow.appendChild(editBtn);
+
+    tabelEle.appendChild(tRow);
+    
+    namethEle.innerText=td1; //
+    
+    mailEle.innerText=td2;
+
+    numberEle.innerText=td3;
+    
+    
+	
+	let edit_Btn=document.getElementsByClassName("edit");
+	let del_Btn=document.getElementsByClassName("delete");
+	
+	for(var i = 0; i < edit_Btn.length ; i++){
+		edit_Btn[i].addEventListener("click",edittext); //fun1
+	}
+	for(var i = 0 ; i < del_Btn.length ; i++){
+		del_Btn[i].addEventListener("click",delcontent); //fun2
+	}
+	idcnt++;
+
+    clearAndShow(); //for clear value and show
+
+
+
+	
+})
+
+function clearAndShow(){
+    input1.value="";
+    input2.value=""; //reset tbl value after save
+    input3.value="";
     
 
-    // modif1 .appendChild(listCount)
-
-    // modif2.appendChild(listCount)
-
-    // modif3 .appendChild(listCount)
-
-
-
-let saveButt = document.getElementsByClassName("word");
-
-let editButt = document.getElementsByClassName("edit");
-
-let deleteButt = document.getElementsByClassName("delee");
-
-for (let index = 0; index < saveButt.length; index++) {
-    saveButt[index].addEventListener("click",save);
-       
 }
-//  for (let index = 0; index < editButt.length; index++) {
-//      deleteButt[index].addEventListener("click",edit);
-       
-//  }
-for (let index = 0; index < deleteButt.length; index++) {
-    editButt[index].addEventListener("click",delet);
-       
+function edittext(){
+	let getprnt=this.parentNode;
+	let nameEdit=getprnt.getElementsByClassName("nameEdit")[0];
+	let mailEdit=getprnt.getElementsByClassName("mailEdit")[0];
+	let numberEdit=getprnt.getElementsByClassName("numberEdit")[0];
+	
+	
+	input1.value = nameEdit.innerText;
+	input2.value = mailEdit.innerText;
+	input3.value = numberEdit.innerText;
+	
+	
+	submitBtn.style.display="inline-block";
+	
+	let getid=getprnt.getAttribute("id");
+	
+	updateId=getid;
+	
+
+
+	hidesave()
 }
-clear();
-
-});
-
-function clear(){
-    data1.value = "";
-    data2.value = "";
-    data3.value = "";
+function delcontent(){
+	this.parentNode.remove();
+	
 }
+function done(i){
 
-function save(){
-    let getPrint = this.parentNode;
-    let nameEle = getPrint.getElementsByClassName("textName") [0];
-    let mailEle = getPrint.getElementsByClassName("textEail") [0];
-    let numEle = getPrint.getElementsByClassName("textNum") [0];
-    data1.value = nameEle.innerText;
-    data2.value = mailEle.innerText;
-    data3.value = numEle.innerText;
-    saveBtn.style.display="inline-block"
-    let getId = getPrint.getAttribute("id")
-    update = getId
-
-}
-function delet(){
-    this.parentNode.remove();
+	//tr ld get
+	//update edited value
+	let upId=document.getElementById(i);
+	console.log(upId);
+	let nameupdate=upId.getElementsByClassName("nameEdit")[0];
+	let mailupdate=upId.getElementsByClassName("mailEdit")[0];
+	let numberupdate=upId.getElementsByClassName("numberEdit")[0];
+	
+	
+	nameupdate.innerText=input1.value;
+	mailupdate.innerText=input2.value;
+	numberupdate.innerText=input3.value;
+	showsave()
+	
+	
 }
 
-function done(index){
-    let txt = document.getElementsByClassName("texts");
-    let getPrnt = document.getElementById(index);
-    let textUpd = getPrnt.getElementsByClassName("save")[0];
-    textUpd.innerText = txt.value;
-    textUpd.innerText = data2.value;
-    textUpd.innerText = data3.value;
-
-}
-saveBtn.addEventListener("click", function(){
-    done (update);
-    clear();
-    saveBtn.style.display = "none";
+submitBtn.addEventListener("click",function(){
+	done(updateId);
+	clearAndShow();
+	submitBtn.style.display="none";
 })
